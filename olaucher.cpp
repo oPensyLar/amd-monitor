@@ -3,11 +3,12 @@
 oLaucher::oLaucher(QObject *parent) : QObject(parent)
 {    
     procAtiConfig = new QProcess();
+    procExecutable = new QProcess();
 }
 
 
 
-void oLaucher::launchErrorCrunch(QProcess::ProcessError err)
+void oLaucher::launchingError(QProcess::ProcessError err)
 {
 
 }
@@ -53,11 +54,11 @@ void oLaucher::ReadStdOutAtiConfig()
 
     qDebug() << "[+] GPU Temp" << grados;
     
-    if(grados>70 && ChkProc(procPyrit->processId())==1)
+    if(grados>70 && ChkProc(procExecutable->processId())==1)
     {
     }       
 
-        if(grados<55 && ChkProc(procPyrit->processId())==2)
+        if(grados<55 && ChkProc(procExecutable->processId())==2)
         {
         }
         
@@ -118,7 +119,7 @@ int oLaucher::GetTempGpu()
     connect(procAtiConfig, SIGNAL(readyReadStandardError()), this, SLOT(ReadStdErrAtiConfig()));
     connect(procAtiConfig, SIGNAL(error(QProcess::ProcessError)), this, SLOT(launchingError(QProcess::ProcessError)));
 
-    qDebug() << "[+] Get Temp GPU [AtiConfig]";    
+    //qDebug() << "[+] Get Temp GPU [AtiConfig]";
     procAtiConfig->start(dats.pathExec, dats.args);
     procAtiConfig->waitForFinished(-1);
 
